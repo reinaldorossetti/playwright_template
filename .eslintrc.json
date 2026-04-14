@@ -1,0 +1,19 @@
+{
+  "ignorePatterns": ["/*", "!/e2e/"],
+
+  "extends": ["airbnb-base"],
+
+  "env": {
+    "node": true,
+    "es2021": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-console": "off",
+    "linebreak-style": "off"
+  }
+
+}
