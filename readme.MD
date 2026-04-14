@@ -178,6 +178,11 @@ npx playwright merge-reports --reporter html ./blob-report
 
 Mescla relatórios blob (útil em execução paralela/CI distribuído).
 
+### 🌐 Relatório da Esteira (CI)
+
+Você pode acessar o último relatório gerado pela esteira (CI) através do link:
+👉 [Playwright Report - GitHub Pages](https://reinaldorossetti.github.io/playwright_template/)
+
 ---
 
 ### 🛠️ Utilitários CLI úteis
