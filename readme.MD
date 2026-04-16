@@ -166,6 +166,88 @@ Abre um trace salvo.
 
 ---
 
+## 📍 Localização de Elementos (Locators)
+
+> Locators são a forma central de encontrar e interagir com elementos na página. O Playwright recomenda priorizar locators que simulam como o usuário percebe a página (acessibilidade).
+
+### 🛠️ Locators recomendados (Prioridade Máxima)
+
+1. **`page.getByRole(role[, options])`**  
+   Localiza por papel semântico (botão, checkbox, link, etc). É o mais robusto e recomendado.
+   ```javascript
+   await page.getByRole('button', { name: 'Enviar' }).click();
+   ```
+
+2. **`page.getByText(text[, options])`**  
+   Localiza pelo conteúdo textual visível para o usuário.
+   ```javascript
+   await expect(page.getByText('Bem-vindo ao sistema')).toBeVisible();
+   ```
+
+3. **`page.getByLabel(label[, options])`**  
+   Localiza um campo de formulário pelo texto do seu rótulo (`<label>`).
+   ```javascript
+   await page.getByLabel('E-mail').fill('user@example.com');
+   ```
+
+4. **`page.getByPlaceholder(placeholder[, options])`**  
+   Localiza um campo de entrada (input) pelo texto de dica (placeholder).
+   ```javascript
+   await page.getByPlaceholder('Digite sua senha').fill('123456');
+   ```
+
+5. **`page.getByTestId(testId)`**  
+   Localiza pelo atributo `data-testid` (ideal para automação quando o texto ou estilo muda com frequência).
+   ```javascript
+   await page.getByTestId('submit-button').click();
+   ```
+
+### 🖼️ Locators para Mídia e Atributos
+
+6. **`page.getByAltText(text[, options])`**  
+   Localiza elementos de mídia (geralmente `<img>`) pelo seu texto alternativo (`alt`).
+   ```javascript
+   await expect(page.getByAltText('Logo da Empresa')).toBeVisible();
+   ```
+
+7. **`page.getByTitle(text[, options])`**  
+   Localiza um elemento pelo seu atributo `title` (aquele que aparece ao passar o mouse).
+   ```javascript
+   await expect(page.getByTitle('Fechar Janela')).toBeVisible();
+   ```
+
+### 🔍 Locator Genérico (CSS e XPath)
+
+8. **`page.locator(selector)`**  
+   Usado para seletores **CSS** ou **XPath** quando os métodos específicos acima não atendem.
+   ```javascript
+   // CSS Selector
+   await page.locator('#id-do-elemento').click();
+   await page.locator('.classe-css').first().click();
+
+   // XPath
+   await page.locator('//button[text()="Salvar"]').click();
+   ```
+
+### 🔗 Filtragem e Encadeamento
+
+Você pode refinar sua busca encadeando locators para maior precisão:
+```javascript
+// Localiza o botão 'Entrar' APENAS dentro do formulário de login
+const loginForm = page.locator('#login-form');
+await loginForm.getByRole('button', { name: 'Entrar' }).click();
+```
+
+Ou usando o método `.filter()` para seletores complexos:
+```javascript
+await page.getByRole('listitem')
+  .filter({ hasText: 'Item Específico' })
+  .getByRole('button', { name: 'Excluir' })
+  .click();
+```
+
+---
+
 ### 📊 Relatórios
 
 ```bash
