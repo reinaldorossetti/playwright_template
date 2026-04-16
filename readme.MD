@@ -248,6 +248,55 @@ await page.getByRole('listitem')
 
 ---
 
+## ⏳ Esperas e Estados (Waiting)
+
+> O Playwright possui auto-waiting (espera automática), mas às vezes precisamos ser explícitos sobre o estado de um elemento.
+
+### ⏱️ Usando o `.waitFor()`
+
+Útil quando você precisa que um elemento atinja um estado específico antes de continuar.
+
+```javascript
+const alerta = page.locator('.modal-alerta');
+const tempoLimite = 10000;
+
+// Espera até estar visível com um tempo customizado
+await alerta.waitFor({ state: 'visible', timeout: tempoLimite });
+
+// Espera até desaparecer da tela
+await alerta.waitFor({ state: 'hidden' });
+
+// Estados disponíveis:
+// 'visible'  - Espera o elemento estar visível E ter tamanho na tela.
+// 'hidden'   - Espera o elemento ser removido do DOM OU ficar invisível.
+// 'attached' - Espera o elemento existir no código HTML (mesmo que invisível).
+// 'detached' - Espera o elemento ser completamente removido do código HTML.
+```
+
+#### 💡 Quando usar cada estado?
+- **`visible`**: O mais comum. Use antes de clicar ou digitar.
+- **`hidden`**: Use para garantir que um loader ou modal de processamento sumiu.
+- **`attached`**: Use quando você precisa que o elemento exista no DOM para ler algum atributo, mas ele ainda não precisa estar visível.
+- **`detached`**: Use para garantir que um elemento foi realmente destruído (ex: após deletar um registro).
+
+
+### 🧐 Verificando visibilidade (Assertions)
+
+Para validar se o comportamento esperado ocorreu, usamos o `expect`.
+
+```javascript
+// Verifica se está visível
+await expect(page.getByText('Sucesso')).toBeVisible();
+
+// Verifica se está oculto/removido
+await expect(page.locator('#carregando')).toBeHidden();
+
+// Verifica se contém um texto específico
+await expect(page.getByRole('heading')).toHaveText('Bem-vindo');
+```
+
+---
+
 ### 📊 Relatórios
 
 ```bash
