@@ -22,7 +22,6 @@ Neste manual você vai:
 Aprimore seus conhecimentos técnicos com nossos guias focados em qualidade e lógica:
 
 - [✨ Clean Code em JavaScript](./clean-code-javascript.md): Boas práticas para escrever código profissional e legível.
-- [🧠 Algoritmos em JavaScript](./algoritimos-js.md): Exemplos práticos de algoritmos essenciais (Fatorial, Fibonacci, etc).
 
 ---
 

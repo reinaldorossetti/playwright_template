@@ -1,39 +1,59 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-/**
- * Gera um timestamp baseado na data atual formatado para uso em nomes de arquivos.
- * Substitui caracteres especiais (: e .) por hifens para garantir compatibilidade.
- * @returns {string} Timestamp formatado (ex: 2023-10-27T10-30-00-000Z).
- */
-export function getTimestamp() {
-  return new Date().toISOString().replace(/[:.]/g, '-');
-}
+export default class PageBase {
+  /**
+   * @param {import('@playwright/test').Page} page
+   */
+  constructor(page) {
+    this.page = page;
+    this.timeOut = 30000;
+  }
 
-/**
- * Captura uma screenshot da página atual com um nome de arquivo datado.
- * Cria o diretório de destino caso ele não exista.
- *
- * @param {import('@playwright/test').Page} page - Instância da página do Playwright.
- * @param {string} [prefix='afterEach-screenshot'] - Prefixo customizado para o nome do arquivo.
- * @param {string} [folder='imgs'] - Nome da pasta onde a imagem será salva.
- * @param {boolean} [fullPage=true] - Se deve capturar a página inteira ou apenas o viewport.
- * @returns {Promise<string>} Caminho absoluto do arquivo de imagem gerado.
- */
-export async function takeTimestampScreenshot(
-  page,
-  prefix = 'afterEach-screenshot',
-  folder = 'imgs',
-  fullPage = true,
-) {
-  const outputDir = path.resolve(process.cwd(), folder);
-  const filePath = path.join(outputDir, `${prefix}-${getTimestamp()}.png`);
+  /**
+   * Gera um timestamp baseado na data atual formatado.
+   * Substitui caracteres especiais (: e .) por hifens para garantir compatibilidade.
+   * @returns {string} Timestamp formatado (ex: 2023-10-27T10-30-00-000Z).
+   */
+  static getTimestamp() {
+    return new Date().toISOString().replace(/[:.]/g, '-');
+  }
 
-  await fs.mkdir(outputDir, { recursive: true });
-  await page.screenshot({
-    path: filePath,
-    fullPage,
-  });
+  /**
+   * Captura uma screenshot da página atual com um nome de arquivo datado.
+   * Cria o diretório de destino caso ele não exista.
+   *
+   * @param {string} [prefix='afterEach-screenshot'] - Prefixo customizado para o nome do arquivo.
+   * @param {string} [folder='imgs'] - Nome da pasta onde a imagem será salva.
+   * @param {boolean} [fullPage=true] - Se deve capturar a página inteira ou apenas o viewport.
+   * @returns {Promise<string>} Caminho absoluto do arquivo de imagem gerado.
+   */
+  async takeTimestampScreenshot(
+    prefix = 'afterEach-screenshot',
+    folder = 'imgs',
+    fullPage = true,
+  ) {
+    const outputDir = path.resolve(process.cwd(), folder);
+    const filePath = path.join(outputDir, `${prefix}-${PageBase.getTimestamp()}.png`);
 
-  return filePath;
+    await fs.mkdir(outputDir, { recursive: true });
+    await this.page.screenshot({
+      path: filePath,
+      fullPage,
+    });
+
+    return filePath;
+  }
+
+  /**
+   * Clica elaborado para resolver problemas scroll e espera.
+   * @param {string} locator
+   */
+  async click(locator) {
+    await this.page.locator(locator).first().waitFor({ state: 'visible', timeout: this.timeOut });
+    const selector = this.page.locator(locator).first();
+    await selector.scrollIntoViewIfNeeded();
+    await selector.focus();
+    await selector.click();
+  }
 }
