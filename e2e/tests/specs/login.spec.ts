@@ -21,8 +21,8 @@ test.describe('Login Feature', () => {
     const userData = pageBase.generateUserData();
 
     await setupLoginSuccessMock(page, userData.email, userData.firstName);
-    await loginPage.logging_in_and_confirming(userData.email, userData.password);
-
+    await loginPage.doLoggingIn(userData.email, userData.password);
+    await loginPage.submitLogin();
     await expect(page).toHaveURL(`${loginPage.baseUrl}/minha-conta`);
     await expect(page.getByTestId('account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
     await expect(navComponent.getUserGreetingLocator()).toBeVisible({ timeout: base.timeOut });
@@ -33,9 +33,8 @@ test.describe('Login Feature', () => {
    */
   test('TS02 - Should display an error alert when credentials are invalid', async ({ page, setupLoginFailureMock }) => {
     await setupLoginFailureMock(page);
-
-    await loginPage.logging_in_and_confirming(LOGIN_VALIDATION.testData.validEmail, LOGIN_VALIDATION.testData.wrongPassword);
-
+    await loginPage.doLoggingIn(LOGIN_VALIDATION.testData.validEmail, LOGIN_VALIDATION.testData.wrongPassword);
+    await loginPage.submitLogin();
     await expect(loginPage.getErrorAlertLocator()).toBeVisible({ timeout: base.timeOut });
     await expect(loginPage.getErrorAlertLocator()).toContainText(LOGIN_VALIDATION.errorMessages.invalidCredentials);
   });
@@ -44,8 +43,7 @@ test.describe('Login Feature', () => {
    * TS03 - Campos vazios: clicar em Entrar sem preencher nada exibe a mensagem de validação local.
    */
   test('TS03 - Should display a validation message when submitting with empty fields', async () => {
-    await loginPage.submit();
-
+    await loginPage.submitLogin();
     await expect(loginPage.getErrorAlertLocator()).toBeVisible({ timeout: base.timeOut });
     await expect(loginPage.getErrorAlertLocator()).toContainText(LOGIN_VALIDATION.errorMessages.emptyFields);
   });
@@ -54,9 +52,8 @@ test.describe('Login Feature', () => {
    * TS04 - Apenas e-mail preenchido: clicar em Entrar sem senha exibe a mensagem de validação local.
    */
   test('TS04 - Should display a validation message when password is empty', async () => {
-    await loginPage.fillEmail(LOGIN_VALIDATION.testData.validEmail);
-    await loginPage.submit();
-
+    await loginPage.doLoggingIn(LOGIN_VALIDATION.testData.validEmail);
+    await loginPage.submitLogin();
     await expect(loginPage.getErrorAlertLocator()).toBeVisible({ timeout: base.timeOut });
     await expect(loginPage.getErrorAlertLocator()).toContainText(LOGIN_VALIDATION.errorMessages.emptyFields);
   });
@@ -71,8 +68,7 @@ test.describe('Login Feature', () => {
     const emailLocator = page.getByTestId(loginPage.emailInput);
     const passwordLocator = page.getByTestId(loginPage.passwordInput);
 
-    await loginPage.fillEmail(longString);
-    await loginPage.fillPassword(longString);
+    await loginPage.doLoggingIn(longString, longString);
 
     const domEmailValue = await emailLocator.inputValue();
     const domPasswordValue = await passwordLocator.inputValue();

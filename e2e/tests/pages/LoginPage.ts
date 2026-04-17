@@ -3,17 +3,11 @@ import PageBase from './PageBase.js';
 
 export class LoginPage extends PageBase {
   page: Page;
-
   readonly emailInput = 'login-email';
-
   readonly passwordInput = 'login-password';
-
   readonly submitButton = 'login-submit-btn';
-
   readonly errorAlert = 'login-error-alert';
-
   readonly createAccountButton = 'login-create-account-btn';
-
   readonly baseUrl = 'http://127.0.0.1:5174';
 
   constructor(page: Page) {
@@ -29,21 +23,12 @@ export class LoginPage extends PageBase {
     return this.page.getByTestId(this.errorAlert);
   }
 
-  async fillEmail(email: string) {
+  async doLoggingIn(email: string = "", password: string = "") {
     await this.page.getByTestId(this.emailInput).fill(email);
-  }
-
-  async fillPassword(password: string) {
     await this.page.getByTestId(this.passwordInput).fill(password);
   }
 
-  async logging_in_and_confirming(email?: string, password?: string) {
-    if (email) await this.fillEmail(email);
-    if (password) await this.fillPassword(password);
-    await this.submit();
-  }
-
-  async submit() {
+  async submitLogin() {
     await this.page.getByTestId(this.submitButton).click();
   }
 
