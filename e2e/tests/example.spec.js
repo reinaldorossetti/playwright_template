@@ -1,5 +1,4 @@
-// @ts-check
-import { test, expect } from './fixtures/index';
+import { test, expect } from './fixtures/index.js';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('https://playwright.dev/');

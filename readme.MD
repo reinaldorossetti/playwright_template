@@ -437,6 +437,51 @@ npm run test:e2e:debug
 
 ---
 
+## 🔐 Variáveis de Ambiente (`.env`)
+
+Para gerenciar credenciais e dados sensíveis de forma segura, o projeto utiliza o arquivo `.env`.
+
+### 1. Configuração do arquivo
+Para testes o sitema do AmazonQA, utilize as seguintes credenciais:
+Projeto: https://github.com/reinaldorossetti/amazonQA.com
+
+Crie um arquivo `.env` na raiz do projeto seguindo este modelo:
+```env
+USER_ADMIN_EMAIL=reiload@gmail.com
+USER_ADMIN_PASSWORD=rei2026@QA
+
+USER_NORMAL_EMAIL=reinaldo.rossetti@outlook.com
+USER_NORMAL_PASSWORD=qualidade2026@QA
+```
+
+> ⚠️ **Importante**: Nunca envie o arquivo `.env` para o repositório. Ele já está no `.gitignore`.
+
+### 2. Acesso aos dados nos testes
+Os dados do `.env` são injetados automaticamente na classe base `PageBase`. Você pode acessá-los diretamente através de qualquer Page Object que herde dela:
+
+```javascript
+// Exemplo dentro de um Page Object:
+async loginComoAdmin() {
+  await this.fillEmail(this.adminUser.email);
+  await this.fillPassword(this.adminUser.password);
+  await this.submit();
+}
+```
+
+Ou diretamente no seu arquivo de teste `.spec.ts` usando o fixture `pageBase`:
+
+```typescript
+test('Login com usuario normal', async ({ page, pageBase }) => {
+  const loginPage = new LoginPage(page);
+  await loginPage.logging_in_and_confirming(
+    pageBase.normalUser.email, 
+    pageBase.normalUser.password
+  );
+});
+```
+
+---
+
 ## ⚠️ Erros comuns e como resolver
 
 ### ❌ “playwright não encontrado”

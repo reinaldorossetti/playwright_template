@@ -1,7 +1,13 @@
 {
   "ignorePatterns": ["/*", "!/e2e/"],
 
-  "extends": ["airbnb-base"],
+  "extends": [
+    "airbnb-base",
+    "plugin:@typescript-eslint/recommended"
+  ],
+
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
 
   "env": {
     "node": true,
@@ -11,9 +17,24 @@
     "ecmaVersion": 2021,
     "sourceType": "module"
   },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".ts"]
+      }
+    }
+  },
   "rules": {
     "no-console": "off",
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    "class-methods-use-this": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "import/prefer-default-export": "off",
+    "max-len": "off",
+    "no-empty-pattern": "off"
   }
 
 }

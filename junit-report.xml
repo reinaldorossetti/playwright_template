@@ -1,6 +1,51 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="3.360874000000302">
-<testsuite name="example.spec.js" timestamp="2026-04-16T20:09:40.898Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.197" errors="0">
-<testcase name="has title" classname="example.spec.js" time="1.197">
+<testsuites id="" name="" tests="5" failures="1" skipped="0" errors="0" time="4.788446000000462">
+<testsuite name="specs\login.spec.ts" timestamp="2026-04-17T16:52:05.138Z" hostname="chromium" tests="5" failures="1" skipped="0" time="6.908" errors="0">
+<testcase name="Login Feature › TS01 - Should successfully log in when providing valid credentials" classname="specs\login.spec.ts" time="1.533">
+</testcase>
+<testcase name="Login Feature › TS02 - Should display an error alert when credentials are invalid" classname="specs\login.spec.ts" time="1.477">
+</testcase>
+<testcase name="Login Feature › TS03 - Should display a validation message when submitting with empty fields" classname="specs\login.spec.ts" time="1.528">
+</testcase>
+<testcase name="Login Feature › TS04 - Should display a validation message when password is empty" classname="specs\login.spec.ts" time="1.516">
+</testcase>
+<testcase name="Login Feature › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload" classname="specs\login.spec.ts" time="0.854">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\specs-login-Login-Feature--3cbbf-using-special-chars-payload-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\specs-login-Login-Feature--3cbbf-using-special-chars-payload-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\specs-login-Login-Feature--3cbbf-using-special-chars-payload-chromium\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBeLessThanOrEqual(expected)" type="expect.toBeLessThanOrEqual">
+<![CDATA[  [chromium] › specs\login.spec.ts:70:3 › Login Feature › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 30
+    Received:    246
+
+      80 |     const domPasswordValue = await passwordLocator.inputValue();
+      81 |
+    > 82 |     expect(domEmailValue.length).toBeLessThanOrEqual(30);
+         |                                  ^
+      83 |     expect(domPasswordValue.length).toBeLessThanOrEqual(30);
+      84 |
+      85 |     expect(domEmailValue).toBe(longString.substring(0, 30));
+        at D:\github-projects\playwright_template\e2e\tests\specs\login.spec.ts:82:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\specs-login-Login-Feature--3cbbf-using-special-chars-payload-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\specs-login-Login-Feature--3cbbf-using-special-chars-payload-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\specs-login-Login-Feature--3cbbf-using-special-chars-payload-chromium\error-context.md
+]]>
+</failure>
 </testcase>
 </testsuite>
 </testsuites>

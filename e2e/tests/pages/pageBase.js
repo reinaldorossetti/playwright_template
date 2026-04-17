@@ -1,5 +1,6 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
+import fs from 'fs/promises';
+import path from 'path';
+import { faker } from '@faker-js/faker';
 
 export default class PageBase {
   /**
@@ -8,6 +9,27 @@ export default class PageBase {
   constructor(page) {
     this.page = page;
     this.timeOut = 30000;
+    this.adminUser = {
+      email: process.env.USER_ADMIN_EMAIL,
+      password: process.env.USER_ADMIN_PASSWORD,
+    };
+    this.normalUser = {
+      email: process.env.USER_NORMAL_EMAIL,
+      password: process.env.USER_NORMAL_PASSWORD,
+    };
+  }
+
+  /**
+  * Gera dados de usuário fake para testes de login.
+  * @returns {{ email: string, password: string, firstName: string }}
+  */
+  generateUserData() {
+    const firstName = faker.person.firstName();
+    return {
+      email: faker.internet.email({ firstName }),
+      password: faker.internet.password({ length: 10, memorable: true }),
+      firstName,
+    };
   }
 
   /**
